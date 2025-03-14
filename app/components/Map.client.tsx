@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngExpression, LatLngTuple } from "leaflet";
 import { Station } from "../types/types";
-import { Link } from "@remix-run/react"; // ✅ Importar Link de Remix
+//import { Link } from "@remix-run/react"; 
 
 interface MapProps {
   posix?: LatLngExpression | LatLngTuple;
@@ -34,9 +34,9 @@ const Map = ({ zoom = defaults.zoom, posix, stations }: MapProps) => {
         <Marker key={station.id} position={[station.latitude, station.longitude]}>
           <Popup>
             <div>
-              <Link to={`/clima/${station.id}`} className="text-blue-600 underline">
+              <a href={`/clima/${station.id}`} className="text-blue-600 underline" >
                 <strong>📍 {station.department}, {station.municipality}, {station.name}</strong>
-              </Link>
+              </a>
               <br />
               🌱 Cultivos: {station.crops.length > 0 ? station.crops.join(", ") : "No disponible"}
             </div>

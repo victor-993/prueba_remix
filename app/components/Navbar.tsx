@@ -9,19 +9,21 @@ const Navbar = () => {
     <>
       <header className="bg-white py-2 flex flex-col items-center shadow-md">
         <h1 className="mx-auto flex items-center">
-          <Link to="/"> 
+          <a href="/">
             <img 
               alt="logo" 
               src="https://colombia.aclimate.org/Environment/Colombia/logo.png" 
               className="text-center" 
             />
-          </Link>
+          </a>
         </h1>
       </header>
 
       <nav className="bg-green-500 p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="text-white text-xl font-bold">AClimate</Link> {/* ✅ Link de Remix */}
+          <a href="/" className="text-white text-xl font-bold">
+            AClimate
+          </a>
 
           {/* Botón para menú en móvil */}
           <button 
