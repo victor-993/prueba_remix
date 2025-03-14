@@ -3,3 +3,7 @@ node_modules
 /.cache
 /build
 .env
+
+public/sw*
+public/swe-worker*
+public/workbox*

@@ -26,6 +26,7 @@ export const links: LinksFunction = () => [
     rel: "stylesheet",
     href: "https://unpkg.com/leaflet@1.8.0/dist/leaflet.css",
   },
+  { rel: "manifest", href: "/manifest.json" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

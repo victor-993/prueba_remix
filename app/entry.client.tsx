@@ -8,6 +8,19 @@ import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((registration) => {
+        console.log("Service Worker registrado con éxito:", registration);
+      })
+      .catch((error) => {
+        console.error("Error al registrar el Service Worker:", error);
+      });
+  });
+}
+
 startTransition(() => {
   hydrateRoot(
     document,
