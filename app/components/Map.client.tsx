@@ -38,7 +38,20 @@ const Map = ({ zoom = defaults.zoom, posix, stations }: MapProps) => {
                 <strong>📍 {station.department}, {station.municipality}, {station.name}</strong>
               </a>
               <br />
-              🌱 Cultivos: {station.crops.length > 0 ? station.crops.join(", ") : "No disponible"}
+              🌱 Cultivos:{' '}
+              {station.crops.length > 0 ? (
+                <ul>
+                  {station.crops.map((crop) => (
+                     <li key={crop.crop_id}>
+                     <a href={`/cultivo/${station.department}/${station.municipality}/${station.name}/${crop.crop_name}`} className="text-blue-600 underline">
+                       {crop.crop_name}
+                     </a>
+                   </li>
+                  ))}
+                </ul>
+              ) : (
+                'No disponible'
+              )}
             </div>
           </Popup>
         </Marker>

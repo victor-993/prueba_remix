@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
-const Map = lazy(() => import("../components/Map.client"));
+const MapLeaftle = lazy(() => import("../components/Map.client"));
 
 const API_URL =
   "https://webapi.aclimate.org/api/Geographic/61e59d829d5d2486e18d2ea8/json";
@@ -35,7 +35,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
           longitude: station.longitude,
           department: department.name,
           municipality: municipality.name,
-          crops: [...new Set(station.ranges.map((r) => r.crop_name))],
+          crops: [...new Map(
+            station.ranges.map((r) => [
+              r.crop_id, 
+              { crop_name: r.crop_name, crop_id: r.crop_id }
+            ])
+          ).values(),],
         }))
       )
     );
@@ -60,7 +65,7 @@ export default function Index() {
    <div>
      {isClient ? (
        <Suspense fallback={<p>Cargando mapa...</p>}>
-         <Map posix={[4.5709, -74.2973]} stations={stations} />
+         <MapLeaftle posix={[4.5709, -74.2973]} stations={stations} />
        </Suspense>
      ) : (
        <p>Cargando mapa...</p>
