@@ -13,6 +13,7 @@ import {
 
 const API_STATIONS =
   "https://webapi.aclimate.org/api/Geographic/61e59d829d5d2486e18d2ea8/json";
+const API_YIELD_EXCEE = "https://webapi.aclimate.org/api/Forecast/YieldExceedance";
 const API_YIELD = "https://webapi.aclimate.org/api/Forecast/Yield";
 const API_AGRONOMIC = "https://webapi.aclimate.org/api/Agronomic/true/json";
 
@@ -35,6 +36,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   let stationDataCrop: StationDataCrop | null = null;
   let yieldData: YieldEntry[] = [];
+  let yieldExceeData: YieldEntry[] = [];
   let agronomicData: AgronomicData | null = null;
 
   const cultivarIds = new Set<string>();
@@ -88,6 +90,14 @@ export async function loader({ params }: LoaderFunctionArgs) {
       });
     }
 
+    const yieldExceeResponse = await fetch(`${API_YIELD_EXCEE}/${stationDataCrop.id}/json`, { cache: "no-store" });
+    if (yieldExceeResponse.ok) {
+      const yieldJson = await yieldExceeResponse.json();
+      yieldExceeData = yieldJson.yield?.[0]?.yield || [];
+    }
+
+    console.log(yieldExceeResponse)
+
     /** 🔹 4. Obtener datos agronómicos */
     const agronomicResponse = await fetch(API_AGRONOMIC, { cache: "no-store" });
     if (agronomicResponse.ok) {
@@ -105,6 +115,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       agronomicData,
       cultivars,
       soils,
+      yieldExceeData,
     });
   } catch (error) {
     console.error("Error al cargar los datos:", error);
@@ -117,8 +128,15 @@ export async function loader({ params }: LoaderFunctionArgs) {
  */
 export default function CropStationPage() {
   const { state, municipality, station, crop } = useParams();
-  const { stationDataCrop, yieldData, cultivars, soils } = useLoaderData<typeof loader>();
+  const { stationDataCrop, yieldData, yieldExceeData, cultivars, soils, agronomicData } = useLoaderData<typeof loader>();
 
+  console.log('yield ', yieldData);
+  console.log('yield_Exceedance ', yieldExceeData);
+  console.log('agronomic', agronomicData);
+  console.log('weather station', stationDataCrop);
+  console.log('cultivares', cultivars);
+  console.log('suelos', soils);
+  
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Estación: {stationDataCrop?.name}</h1>
